@@ -41,7 +41,7 @@ disconnect(Topology) ->
 status(Topology) ->
   Res = mc_topology:get_pool(Topology, []),
   {ok, #{pool := Pid}} = Res,
-  poolboy:status(Pid).
+  mongo_poolboy:status(Pid).
 
 -spec transaction(pid() | atom(), fun()) -> any().
 transaction(Topology, Transaction) ->
@@ -56,7 +56,7 @@ transaction(Topology, Transaction, Options) ->
 transaction(Topology, Transaction, Options, Timeout) ->
   case mc_topology:get_pool(Topology, Options) of
     {ok, Pool = #{pool := C}} ->
-      try poolboy:transaction(C, fun(Worker) -> Transaction(Pool#{pool => Worker}) end, Timeout)
+      try mongo_poolboy:transaction(C, fun(Worker) -> Transaction(Pool#{pool => Worker}) end, Timeout)
       catch
         error:not_master ->
           mc_topology:update_topology(Topology),
@@ -85,7 +85,7 @@ transaction_query(Topology, Transaction, Options) ->
 transaction_query(Topology, Transaction, Options, Timeout) ->
   case mc_topology:get_pool(Topology, Options) of
     {ok, Pool = #{pool := C}} ->
-      poolboy:transaction(C, fun(Worker) -> Transaction(Pool#{pool => Worker}) end, Timeout);
+      mongo_poolboy:transaction(C, fun(Worker) -> Transaction(Pool#{pool => Worker}) end, Timeout);
     Error ->
       Error
   end.

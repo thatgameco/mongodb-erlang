@@ -28,7 +28,7 @@ start_pool(SizeArgs, WorkerArgs) ->
   supervisor:start_child(?MODULE, [PoolArgs, WorkerArgs]).
 
 stop_pool(Pid) when is_pid(Pid) ->
-  poolboy:stop(Pid);
+  mongo_poolboy:stop(Pid);
 stop_pool(_) ->
   ok.
 
@@ -71,7 +71,7 @@ start_link() ->
   }} | ignore).
 init([]) ->
   {ok, {{simple_one_for_one, 1000, 3600},
-    [{worker_pool, {poolboy, start_link, []}, transient, 5000, worker, [poolboy]}]}}.
+    [{worker_pool, {mongo_poolboy, start_link, []}, transient, 5000, worker, [mongo_poolboy]}]}}.
 
 %%%===================================================================
 %%% Internal functions

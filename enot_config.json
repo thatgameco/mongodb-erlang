@@ -13,8 +13,8 @@
       "tag": "2.0.1"
     },
     {
-      "name": "poolboy",
-      "url": "git://github.com/comtihon/poolboy",
+      "name": "mongo_poolboy",
+      "url": "git://github.com/thatgameco/mongo_poolboy",
       "branch": "master"
     }
   ]
