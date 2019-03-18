@@ -60,10 +60,6 @@ init(Options) ->
           net_module = NetModule,
           next_req_fun = NextReqFun});
     Error ->
-      io:format("mc_worker Error ~p~n", [Error]),
-      RetryInterval = application:get_env(mongodb, retry_interval_ms, 3000),
-      timer:sleep(RetryInterval),
-
       proc_lib:init_ack(Error)
   end.
 
